@@ -5,14 +5,19 @@ from __future__ import annotations
 import logging
 from typing import TYPE_CHECKING, Any, Protocol
 
-from universal_silabs_flasher.const import ApplicationType
-
 from homeassistant.components import usb
 from homeassistant.components.homeassistant_hardware import (
     firmware_config_flow,
     silabs_multiprotocol_addon,
 )
-from homeassistant.config_entries import ConfigEntry, ConfigFlowResult, OptionsFlow
+from homeassistant.components.homeassistant_hardware.util import ApplicationType
+from homeassistant.config_entries import (
+    ConfigEntry,
+    ConfigEntryBaseFlow,
+    ConfigFlowContext,
+    ConfigFlowResult,
+    OptionsFlow,
+)
 from homeassistant.core import callback
 
 from .const import DOCS_WEB_FLASHER_URL, DOMAIN, HardwareVariant
@@ -33,10 +38,10 @@ else:
     TranslationPlaceholderProtocol = object
 
 
-class SkyConnectTranslationMixin(TranslationPlaceholderProtocol):
+class SkyConnectTranslationMixin(ConfigEntryBaseFlow, TranslationPlaceholderProtocol):
     """Translation placeholder mixin for Home Assistant SkyConnect."""
 
-    context: dict[str, Any]
+    context: ConfigFlowContext
 
     def _get_translation_placeholders(self) -> dict[str, str]:
         """Shared translation placeholders."""

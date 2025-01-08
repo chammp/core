@@ -460,7 +460,6 @@ def rename_old_gas_to_mbus(
                         ent_reg.async_update_entity(
                             entity.entity_id,
                             new_unique_id=mbus_device_id,
-                            device_id=mbus_device_id,
                         )
                     except ValueError:
                         LOGGER.debug(
@@ -549,7 +548,7 @@ async def async_setup_entry(
     dsmr_version = entry.data[CONF_DSMR_VERSION]
     entities: list[DSMREntity] = []
     initialized: bool = False
-    add_entities_handler: Callable[..., None] | None
+    add_entities_handler: Callable[[], None] | None
 
     @callback
     def init_async_add_entities(telegram: Telegram) -> None:
